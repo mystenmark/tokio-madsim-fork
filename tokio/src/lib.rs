@@ -644,3 +644,6 @@ cfg_macros! {
 #[cfg(feature = "io-util")]
 #[cfg(test)]
 fn is_unpin<T: Unpin>() {}
+
+/// Export pub(crate) functionality to madsim.
+pub mod madsim_adapter;
