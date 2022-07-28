@@ -660,3 +660,6 @@ fn is_unpin<T: Unpin>() {}
 
 #[cfg(fuzzing)]
 pub mod fuzz;
+
+/// Export pub(crate) functionality to madsim.
+pub mod madsim_adapter;
