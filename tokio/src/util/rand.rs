@@ -49,6 +49,20 @@ impl FastRand {
 
         s0.wrapping_add(s1)
     }
+
+    fn reset(&self, seed: u64) {
+        let f = FastRand::new(seed);
+        self.one.set(f.one.get());
+        self.two.set(f.two.get());
+    }
+}
+
+thread_local! {
+    static THREAD_RNG: FastRand = FastRand::new(crate::loom::rand::seed());
+}
+
+pub(crate) fn reset_rng(seed: u64) {
+    THREAD_RNG.with(|rng| rng.reset(seed));
 }
 
 // Used by the select macro and `StreamMap`
@@ -56,9 +70,5 @@ impl FastRand {
 #[doc(hidden)]
 #[cfg_attr(not(feature = "macros"), allow(unreachable_pub))]
 pub fn thread_rng_n(n: u32) -> u32 {
-    thread_local! {
-        static THREAD_RNG: FastRand = FastRand::new(crate::loom::rand::seed());
-    }
-
     THREAD_RNG.with(|rng| rng.fastrand_n(n))
 }
