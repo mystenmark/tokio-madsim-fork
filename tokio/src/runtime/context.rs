@@ -84,6 +84,11 @@ pub(crate) fn thread_rng_n(n: u32) -> u32 {
     CONTEXT.with(|ctx| ctx.rng.fastrand_n(n))
 }
 
+#[cfg(any(feature = "rt", feature = "macros"))]
+pub(crate) fn reset_rng(seed: RngSeed) {
+    CONTEXT.with(|ctx| ctx.rng.replace_seed(seed));
+}
+
 pub(super) fn budget<R>(f: impl FnOnce(&Cell<coop::Budget>) -> R) -> Result<R, AccessError> {
     CONTEXT.try_with(|ctx| f(&ctx.budget))
 }
