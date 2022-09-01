@@ -642,5 +642,5 @@ cfg_macros! {
 #[cfg(test)]
 fn is_unpin<T: Unpin>() {}
 
-/// Export pub(crate) functionality to madsim.
-pub mod madsim_adapter;
+/// Export pub(crate) functionality to msim.
+pub mod msim_adapter;
